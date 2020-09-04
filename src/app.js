@@ -1,9 +1,10 @@
 const express = require("express");
+const axios = require("axios");
 
 const app = express();
 
 app.get("", (req, res) => {
-  res.send("Welcome to recipe tracker. Raw turkey is disgusting");
+  res.send("This is the homepage");
 });
 
 app.get("/colleen", (req, res) => {
