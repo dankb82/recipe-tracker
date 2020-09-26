@@ -18,10 +18,18 @@ app.get("/colleen", (req, res) => {
 });
 
 app.post("/users", async (req, res) => {
+  if (req.body.name && typeof req.body.name !== "string") {
+    return res.status(400).send("Name must be a string");
+  }
+
+  if (req.body.username && typeof req.body.username !== "string") {
+    return res.status(400).send("Username must be a string");
+  }
+
   try {
     const user = new User(req.body);
-    const saveUser = await user.save();
-    res.send(saveUser);
+    await user.save();
+    res.status(201).send(user);
   } catch (error) {
     res.status(400).send(error);
   }
@@ -33,8 +41,8 @@ app.post("/recipes", async (req, res) => {
     const recipe = new Recipe({
       recipe: recipeFromImage,
     });
-    const saveRecipe = await recipe.save();
-    res.send(saveRecipe);
+    await recipe.save();
+    res.status(201).send(recipe);
   } catch (error) {
     res.status(400).send(error);
   }
