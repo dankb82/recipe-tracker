@@ -13,8 +13,13 @@ app.get("", (req, res) => {
   res.send("This is the homepage");
 });
 
-app.get("/colleen", (req, res) => {
-  res.send("This is colleen's page");
+app.get("/recipes", async (req, res) => {
+  try {
+    const recipes = await Recipe.find({});
+    res.send(recipes);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 app.post("/users", async (req, res) => {
@@ -37,10 +42,8 @@ app.post("/users", async (req, res) => {
 
 app.post("/recipes", async (req, res) => {
   try {
-    const recipeFromImage = await readRecipeImage(req.body.path);
-    const recipe = new Recipe({
-      recipe: recipeFromImage,
-    });
+    // const recipeFromImage = await readRecipeImage(req.body.path);
+    const recipe = new Recipe(req.body);
     await recipe.save();
     res.status(201).send(recipe);
   } catch (error) {
