@@ -22,6 +22,17 @@ app.get("/recipes", async (req, res) => {
   }
 });
 
+app.get("/recipe/:title", async (req, res) => {
+  try {
+    const recipe = await Recipe.findOne({
+      title: req.params.title,
+    }).exec();
+    res.send(recipe);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 app.post("/users", async (req, res) => {
   if (req.body.name && typeof req.body.name !== "string") {
     return res.status(400).send("Name must be a string");
