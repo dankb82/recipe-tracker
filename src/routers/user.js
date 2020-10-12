@@ -33,7 +33,7 @@ router.get("/users/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) {
-      return res.status(404).send();
+      return res.status(404).send({ error: "User not found" });
     }
 
     res.send(user);
