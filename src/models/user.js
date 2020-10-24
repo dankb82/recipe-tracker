@@ -1,20 +1,24 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 
-const User = mongoose.model("User", {
+const userSchema = new mongoose.Schema({
   name: {
     type: String,
+    required: true,
     trim: true,
-    default: "anonymous",
   },
+
   username: {
     type: String,
+    required: true,
+    unique: true,
     trim: true,
-    default: "anonymous",
   },
+
   email: {
     type: String,
     required: true,
+    unique: true,
     trim: true,
     validate(value) {
       if (!validator.isEmail(value)) {
@@ -22,12 +26,20 @@ const User = mongoose.model("User", {
       }
     },
   },
+
   password: {
     type: String,
     required: true,
     trim: true,
     minlength: 7,
+    validate(value) {
+      if (value.toLowerCase().includes("password")) {
+        throw new Error("Password cannot contain 'password'");
+      }
+    },
   },
 });
+
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;

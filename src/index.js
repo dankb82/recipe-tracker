@@ -1,6 +1,5 @@
 const express = require("express");
 require("./db/mongoose");
-const readRecipeImage = require("./managers/recipe-reader");
 const userRouter = require("./routers/user");
 const recipeRouter = require("./routers/recipe");
 const homeRouter = require("./routers/home");
