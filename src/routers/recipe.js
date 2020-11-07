@@ -7,8 +7,8 @@ router.post("/recipes", async (req, res) => {
     const recipe = new Recipe(req.body);
     await recipe.save();
     res.status(201).send(recipe);
-  } catch (error) {
-    res.status(400).send(error);
+  } catch (e) {
+    res.status(400).send(e);
   }
 });
 
@@ -16,8 +16,8 @@ router.get("/recipes", async (req, res) => {
   try {
     const recipes = await Recipe.find({});
     res.send(recipes);
-  } catch (err) {
-    console.log(err);
+  } catch (e) {
+    res.status(500).send();
   }
 });
 
@@ -25,13 +25,12 @@ router.get("/recipes/:id", async (req, res) => {
   try {
     const recipe = await Recipe.findById(req.params.id);
     if (!recipe) {
-      console.log("the if");
       return res.status(404).send({ error: "Recipe not found" });
     }
 
     res.send(recipe);
-  } catch (error) {
-    res.status(500).send(error);
+  } catch (e) {
+    res.status(500).send(e);
   }
 });
 
@@ -58,7 +57,7 @@ router.patch("/recipes/:id", async (req, res) => {
     }
 
     res.send(recipe);
-  } catch (error) {
+  } catch (e) {
     res.status(500).send();
   }
 });
@@ -71,7 +70,7 @@ router.delete("/recipes/:id", async (req, res) => {
     }
 
     res.send(recipe);
-  } catch (error) {
+  } catch (e) {
     res.status(500).send();
   }
 });

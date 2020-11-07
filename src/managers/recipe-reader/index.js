@@ -17,8 +17,8 @@ const readRecipeImage = async (image) => {
     );
     await worker.terminate();
     return cleanedRecipe;
-  } catch (error) {
-    console.log(error);
+  } catch (e) {
+    console.log(e);
   }
 };
 
