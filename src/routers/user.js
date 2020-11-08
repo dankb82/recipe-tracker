@@ -11,10 +11,11 @@ router.post("/users", async (req, res) => {
     return res.status(400).send("Username must be a string");
   }
 
+  const user = new User(req.body);
   try {
-    const user = new User(req.body);
     await user.save();
-    res.status(201).send(user);
+    const token = await user.generateAuthToken();
+    res.status(201).send({ user, token });
   } catch (e) {
     res.status(400).send(e);
   }
@@ -24,7 +25,8 @@ router.post("/users/login", async (req, res) => {
   try {
     const username = req.body.username || req.body.email;
     const user = await User.findByCredentials(username, req.body.password);
-    res.send(user);
+    const token = await user.generateAuthToken();
+    res.send({ user, token });
   } catch (e) {
     res.status(400).send();
   }
