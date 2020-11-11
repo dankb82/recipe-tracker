@@ -1,6 +1,7 @@
 const express = require("express");
 const router = new express.Router();
 const auth = require("../middleware/auth");
+const { findById } = require("../models/user");
 const User = require("../models/user");
 
 router.post("/users", async (req, res) => {
@@ -30,6 +31,29 @@ router.post("/users/login", async (req, res) => {
     res.send({ user, token });
   } catch (e) {
     res.status(400).send();
+  }
+});
+
+router.post("/users/logout", auth, async (req, res) => {
+  try {
+    //Check the tokens array for the token in the request and remove from the array
+    req.user.tokens = req.user.tokens.filter((token) => {
+      return token.token !== req.token;
+    });
+    await req.user.save();
+    res.send({ message: "logged out" });
+  } catch (e) {
+    res.status(500).send();
+  }
+});
+
+router.post("/users/logoutAll", auth, async (req, res) => {
+  try {
+    req.user.tokens = [];
+    await req.user.save();
+    res.send({ message: "logged out of all sessions" });
+  } catch (e) {
+    res.status(500).send();
   }
 });
 

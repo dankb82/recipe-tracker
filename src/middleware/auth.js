@@ -16,11 +16,12 @@ const auth = async (req, res, next) => {
     if (!user) {
       throw new Error();
     }
-    //Add user to the request in the middleware so the route handler has it
+    //Add user and token to the request in the middleware so the route handler has it
+    req.token = token;
     req.user = user;
     next();
   } catch (e) {
-    res.status(401).send({ error: "Please sign in or create and account" });
+    res.status(401).send({ error: "Please sign in or create an account" });
   }
 };
 
