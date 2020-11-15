@@ -32,8 +32,12 @@ const recipeSchema = new mongoose.Schema({
     directions: [
       {
         step: {
-          type: String,
-          trim: true,
+          instruction: {
+            type: String,
+          },
+          ingredientMapping: {
+            type: String,
+          },
         },
       },
     ],
